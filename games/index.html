@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon.png" />
+    <link rel="apple-touch-icon" href="favicon.png" />
+    <script>
+      window.addEventListener('beforeunload', function (event) {
+        event.preventDefault()
+        event.returnValue = ''
+        return 'Are you sure you want to leave? Any unsaved changes will be lost.'
+      })
+    </script>
+    <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-WX5VS54ZDW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+      gtag('config', 'G-WX5VS54ZDW')
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ultra Games - UBG ULTRA</title>
+    <meta name="title" content="Ultra Games" />
+    <meta
+      name="description"
+      content="Play unblocked games on Ultra Games. Fast, free, no downloads—perfect for school or home."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ubg-ultra.com/games/" />
+    <meta property="og:title" content="Ultra Games" />
+    <meta
+      property="og:description"
+      content="Play unblocked games on Ultra Games. Fast, free, no downloads—perfect for school or home."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://ubg-ultra.com/games/" />
+    <meta name="twitter:title" content="Ultra Games" />
+    <meta
+      name="twitter:description"
+      content="Play unblocked games on Ultra Games. Fast, free, no downloads—perfect for school or home."
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#7f5af0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap">
+  </head>
+  <body class="dark-mode">
+    <!-- ANIMATED SPACE BACKGROUND -->
+    <div class="space-stars">
+      <div class="nebula purple"></div>
+      <div class="nebula blue"></div>
+      <div class="nebula cyan"></div>
+    </div>
+
+    <header>
+      <div class="header-content">
+        <div class="logo">⚡ Ultra Games</div>
+        <div class="search-container">
+          <input type="text" id="searchBar" placeholder="Search games..." oninput="filterZones()" />
+          <select id="sortOptions" onchange="sortZones()">
+            <option value="name">Name</option>
+            <option value="id">ID (Date)</option>
+            <option value="popular">Popular</option>
+            <option value="trendingDay">Trending (Day)</option>
+            <option value="trendingWeek">Trending (Week)</option>
+            <option value="trendingMonth">Trending (Month)</option>
+          </select>
+          <select id="filterOptions" onchange="filterZones2()">
+            <option value="none">(SELECT TAG)</option>
+          </select>
+        </div>
+        <div class="control-buttons">
+          <button class="control-button" title="Home" onclick="window.location.href='/home'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+          </button>
+          <button id="refresh" class="control-button" title="Refresh all the games" onclick="listZones()">
+            <img src="refresh-icon.png" alt="refresh" />
+          </button>
+          <button id="settings" class="control-button" title="Settings!">
+            <img src="setting.png" alt="settings" />
+          </button>
+        </div>
+      </div>
+    </header>
+    <main>
+      <details id="featuredZonesWrapper" open>
+        <summary id="allZonesSummary" style="font-size: 1.2rem; font-weight: bold; cursor: pointer">
+          Featured Games
+        </summary>
+        <div id="featuredZones" class="zone-container"></div>
+      </details>
+      <br />
+      <hr />
+      <br />
+      <details id="allZonesWrapper" open>
+        <summary id="allSummary" style="font-size: 1.2rem; font-weight: bold; cursor: pointer">All Games</summary>
+        <div id="container">Loading...</div>
+      </details>
+    </main>
+
+    <div id="zoneViewer">
+      <div class="zone-header">
+        <div class="zone-title">
+          <h2 id="zoneName">game</h2>
+          <button class="info-button" onclick="showZoneInfo()" title="Game Information">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </button>
+          <span id="zoneId" style="display: none"></span>
+          <a id="zoneAuthor" href="#" target="_blank">by Author</a>
+        </div>
+        <div class="zone-controls">
+          <button onclick="fullscreenZone()">Fullscreen</button>
+          <button onclick="aboutBlank()">Open in New Tab</button>
+          <button onclick="downloadZone()">Download</button>
+          <button onclick="closeZone()">Close</button>
+        </div>
+      </div>
+      <iframe id="zoneFrame"></iframe>
+    </div>
+
+    <div id="popupOverlay">
+      <div class="popup">
+        <div class="popup-header">
+          <h3 id="popupTitle">Title</h3>
+          <button id="popupClose" onclick="closePopup()">×</button>
+        </div>
+        <div id="popupBody">Content will be here</div>
+      </div>
+    </div>
+    <footer>
+      <div class="footer-links">
+        <a
+          href="#"
+          onclick="
+            loadDMCA()
+            return false
+          "
+          >DMCA</a
+        >
+        <a
+          href="#"
+          onclick="
+            showContact()
+            return false
+          "
+          >Contact</a
+        >
+        <a
+          href="#"
+          onclick="
+            loadPrivacy()
+            return false
+          "
+          >Privacy Policy</a
+        >
+        <a href="javascript:saveData()">Export Data</a>
+        <a
+          href="#"
+          onclick="
+            document.getElementById('importData').click()
+            return false
+          "
+          >Import Data</a
+        >
+        <input type="file" id="importData" style="display: none" onchange="loadData(event)" />
+      </div>
+      <div>
+        <script type="text/javascript">
+            aclib.runBanner({
+                zoneId: '10952070',
+            });
+        </script>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <script>
+      try {
+        const search = new URLSearchParams(window.location.search)
+        const privacy = search.get('privacy')
+        if (privacy) {
+          loadPrivacy()
+        }
+      } catch (error) {}
+    </script>
+    <script>
+      navigator.serviceWorker.register(location.protocol + '//' + location.hostname + '/sw.js')
+    </script>
+  </body>
+</html>
